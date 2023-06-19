@@ -1,21 +1,44 @@
 class MyCounter extends HTMLElement {
-    constructor() {
-     super();
-     this.shadow = this.attachShadow({mode: "open"}); //open to access component
-    }
+  constructor() {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" }); //'open' to access the component.
+  }
+  get count() {
+    return this.getAttribute("count");
+  }
+  set count(val) {
+    this.setAttribute("count", val);
+  }
 
-    connectedCallback(callback) {
-        this.render()
-    }
+  static get observedAttributes() {
+    return ["count"];
+  }
 
-    render() {
-       this.shadow.innerHTML = `
+  attributeChangedCallback(prop, oldVal, newVal) {
+    if (prop === "count") {
+      this.render();
+      let btn = this.shadow.querySelector("#btn");
+      btn.addEventListener("click", this.inc.bind(this));
+    }
+  }
+
+  inc() {
+    this.count++;
+  }
+
+  connectedCallback() {
+    this.render();
+    let btn = this.shadow.querySelector("#btn");
+    btn.addEventListener("click", this.inc.bind(this));
+  }
+
+  render() {
+    this.shadow.innerHTML = `
        <H1>counter</H1>
        ${this.count}
        <button id='btn'> Increment </button>
-       ` ;
-    }
+       `;
+  }
 }
 
-
-customElements.define('my-counter', MyCounter)
+customElements.define("my-counter", MyCounter);
