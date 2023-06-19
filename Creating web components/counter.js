@@ -8,7 +8,7 @@ class MyCounter extends HTMLElement {
      */
     constructor() {
       super();
-      this.shadow = this.attachShadow({ mode: "open" }); //'open' to access the component.
+      this.shadow = this.attachShadow({ mode: "open" }); //'open' to access this shadowDOM via this component.
     }
   
     /**
